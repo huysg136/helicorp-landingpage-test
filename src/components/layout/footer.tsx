@@ -10,7 +10,7 @@ export const Footer: React.FC = () => {
           {/* Col 1: Brand details */}
           <div>
             <h3 className="text-[#004ac6] dark:text-[#6ffbbe] font-bold text-lg mb-4 tracking-tight">
-              AuraRing X
+              AuraRing Tech
             </h3>
             <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed max-w-xs">
               Revolutionizing the way we connect with our biological rhythms. Founded in 2026.
@@ -69,7 +69,7 @@ export const Footer: React.FC = () => {
         {/* Bottom credits */}
         <div className="mt-16 pt-8 border-t border-slate-200 dark:border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-slate-400 dark:text-slate-500">
-            © {currentYear} AuraRing X. All rights reserved.
+            © {currentYear} AuraRing Tech. All rights reserved.
           </p>
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 bg-emerald-500 rounded-full animate-ping" />
