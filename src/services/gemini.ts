@@ -2,7 +2,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 
 // Initialize Gemini client. 
 // Uses API Key from environment or falls back to standard client side API simulation.
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY || '';
+const API_KEY = import.meta.env.VITE_AI_API_KEY || '';
 
 const genAI = API_KEY ? new GoogleGenerativeAI(API_KEY) : null;
 
