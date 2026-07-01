@@ -36,7 +36,7 @@ const App: React.FC = () => {
       <Navbar />
 
       {/* Main Sections */}
-      <main className="mx-auto sm:mx-4">
+      <main className="mx-auto">
         <Hero />
         <Insights />
         <SpecsGrid />

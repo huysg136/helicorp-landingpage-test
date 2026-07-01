@@ -64,14 +64,14 @@ export const ProductConfig: React.FC = () => {
       ref={ref}
       className="py-24 px-6 bg-white dark:bg-slate-950 transition-colors duration-300"
     >
-      <div className="max-w-[1200px] mx-auto">
+      <div className="max-w-300 mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           
           {/* Left Column: Product Showcase Rendering Image */}
           <motion.div
             animate={controls}
             initial={initial}
-            className="relative bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl p-8 overflow-hidden flex flex-col justify-between aspect-4/3 md:aspect-square"
+            className="relative bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl overflow-hidden flex flex-col justify-between md:aspect-square"
           >
             
             {/* Visual variants block */}
