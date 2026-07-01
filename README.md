@@ -1,6 +1,6 @@
 # AuraRing X - Landing Page (HeliCorp Recruitment Test V2)
 
-Ứng viên: Nguyễn Văn A
+Ứng viên: Thái Gia Huy
 Vị trí ứng tuyển: Thực tập sinh IT Phát triển Website
 
 ## 🚀 Đường dẫn dự án
