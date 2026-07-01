@@ -26,7 +26,10 @@ export const askGemini = async (prompt: string, chatHistory: { role: 'user' | 'm
   if (!genAI) {
     // Simulated delay & response for demo when API key is missing
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    const promptLower = prompt.toLowerCase();
+    // Determine the actual user text: either the explicit prompt or the last
+    // user turn appended to chatHistory.
+    const userText = prompt || chatHistory.filter((m) => m.role === 'user').slice(-1)[0]?.parts[0] || '';
+    const promptLower = userText.toLowerCase();
     if (promptLower.includes('giá') || promptLower.includes('price') || promptLower.includes('bao nhiêu')) {
       return 'AuraRing X hiện tại có giá bán là $399.00 USD kèm theo bộ Sizing Kit đo size tay miễn phí.';
     }
@@ -43,16 +46,44 @@ export const askGemini = async (prompt: string, chatHistory: { role: 'user' | 'm
   }
 
   try {
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const model = genAI.getGenerativeModel({
+      model: 'gemini-2.5-flash',
+      // Pass system instruction at the model level so it applies to every turn
+      // without polluting the conversation history.
+      systemInstruction: SYSTEM_INSTRUCTION,
+    });
+
+    // When the caller appends the latest user message to chatHistory (and
+    // passes an empty prompt), we pop that last entry to use as the
+    // sendMessage payload, while the rest becomes the prior context.
+    let historySlice = chatHistory;
+    let messageToSend = prompt;
+
+    if (!messageToSend && chatHistory.length > 0) {
+      const last = chatHistory[chatHistory.length - 1];
+      if (last.role === 'user') {
+        historySlice = chatHistory.slice(0, -1); // everything before the latest user turn
+        messageToSend = last.parts[0];           // the latest user turn becomes the prompt
+      }
+    }
+
+    // The Gemini SDK's `Content.parts` type expects `Part[]` (objects like
+    // `{ text: string }`), not plain strings. Convert our simpler
+    // `parts: string[]` shape into the SDK's expected format here, so
+    // callers of `askGemini` can keep passing plain strings.
+    const formattedHistory = historySlice.map((entry) => ({
+      role: entry.role,
+      parts: entry.parts.map((text) => ({ text })),
+    }));
+
     const chat = model.startChat({
-      history: chatHistory,
+      history: formattedHistory,
       generationConfig: {
         maxOutputTokens: 200,
       },
     });
 
-    const fullPrompt = `${SYSTEM_INSTRUCTION}\n\nUser asks: ${prompt}`;
-    const result = await chat.sendMessage(fullPrompt);
+    const result = await chat.sendMessage(messageToSend);
     const response = await result.response;
     return response.text();
   } catch (error) {

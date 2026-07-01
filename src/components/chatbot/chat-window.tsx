@@ -42,7 +42,9 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
     setMessages((prev) => [...prev, userMsg]);
     setIsTyping(true);
 
-    // Format chat history for Gemini API
+    // Format chat history for Gemini API — include all previous messages
+    // (excluding the welcome greeting) PLUS the new user message so Gemini
+    // always receives the full conversation context.
     const history = messages
       .filter((m) => m.id !== 'welcome')
       .map((m) => ({
@@ -50,8 +52,14 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
         parts: [m.text],
       }));
 
-    // Call service to request response
-    const botReplyText = await askGemini(userMessageText, history);
+    // Append the current user turn to the history slice that is sent to the
+    // model.  We do NOT include it as a separate `prompt` argument so the
+    // Gemini chat session sees a coherent, uninterrupted conversation thread.
+    history.push({ role: 'user', parts: [userMessageText] });
+
+    // Call service to request response (history already contains the latest
+    // user message, so we pass an empty string as the prompt).
+    const botReplyText = await askGemini('', history);
     
     // Append Bot message response
     const botMsg: Message = {
