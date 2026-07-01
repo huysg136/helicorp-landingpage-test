@@ -3,6 +3,15 @@ import { Message } from '../../types';
 import { askGemini } from '../../services/gemini';
 import { Send, X, Bot, User } from 'lucide-react';
 
+// Strip common markdown tokens so bot replies render as plain text.
+const stripMarkdown = (text: string): string =>
+  text
+    .replace(/\*\*(.+?)\*\*/g, '$1')   // **bold** → bold
+    .replace(/\*(.+?)\*/g, '$1')        // *italic* → italic
+    .replace(/_{1,2}(.+?)_{1,2}/g, '$1') // __bold__ / _italic_
+    .replace(/#+\s*/g, '')              // ## headings
+    .replace(/`{1,3}([^`]*)`{1,3}/g, '$1'); // `code`
+
 interface ChatWindowProps {
   onClose: () => void;
 }
@@ -124,7 +133,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
                   : 'bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300 rounded-tl-none border border-slate-100 dark:border-slate-800'
               }`}
             >
-              {msg.text}
+              {msg.sender === 'bot' ? stripMarkdown(msg.text) : msg.text}
             </div>
           </div>
         ))}

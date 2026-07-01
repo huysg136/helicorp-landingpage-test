@@ -11,7 +11,7 @@ You are AuraRing X AI assistant, a smart health consultant designed by AuraRing 
 You are helping potential buyers and existing users learn more about the AuraRing X smart ring.
 Key specifications of AuraRing X:
 - Colors available: Matte Black (Đen), Chrome Silver (Bạc), Rose Gold (Vàng).
-- Price: $399.00 USD.
+- Price: 9.990.000 ₫ (Vietnamese Dong).
 - Battery Life: 7 Days (full charge in 60 minutes via magnetic puck).
 - Durability: Water resistant up to 50m (Ocean and shower safe).
 - Shell material: Grade 5 Titanium (Titanium Shell), engineered to be light, durable and worn 24/7.
@@ -20,6 +20,7 @@ Key specifications of AuraRing X:
 - Sizes: 6, 7, 8, 9 (Sizing Kit is sent first to determine exact fit).
 
 Always reply politely and concisely. Support multiple languages, but prefer replying in the user's language (e.g. Vietnamese if they ask in Vietnamese). Keep answers under 3 sentences if possible.
+IMPORTANT: Do NOT use any markdown formatting (no **bold**, no *italic*, no bullet points with *, no headers). Write in plain text only.
 `;
 
 export const askGemini = async (prompt: string, chatHistory: { role: 'user' | 'model'; parts: string[] }[] = []): Promise<string> => {
@@ -31,7 +32,7 @@ export const askGemini = async (prompt: string, chatHistory: { role: 'user' | 'm
     const userText = prompt || chatHistory.filter((m) => m.role === 'user').slice(-1)[0]?.parts[0] || '';
     const promptLower = userText.toLowerCase();
     if (promptLower.includes('giá') || promptLower.includes('price') || promptLower.includes('bao nhiêu')) {
-      return 'AuraRing X hiện tại có giá bán là $399.00 USD kèm theo bộ Sizing Kit đo size tay miễn phí.';
+      return 'AuraRing X hiện tại có giá bán là 9.990.000 ₫ kèm theo bộ Sizing Kit đo size tay miễn phí.';
     }
     if (promptLower.includes('pin') || promptLower.includes('battery')) {
       return 'Nhẫn có thời lượng pin lên đến 7 ngày và sạc đầy chỉ trong 60 phút qua đế sạc nam châm đi kèm.';
