@@ -28,11 +28,18 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // Auto-scroll to bottom of conversation
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
+
+  useEffect(() => {
+    if (!isTyping) {
+      inputRef.current?.focus();
+    }
+  }, [isTyping]);
 
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,9 +58,6 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
     setMessages((prev) => [...prev, userMsg]);
     setIsTyping(true);
 
-    // Format chat history for Gemini API — include all previous messages
-    // (excluding the welcome greeting) PLUS the new user message so Gemini
-    // always receives the full conversation context.
     const history = messages
       .filter((m) => m.id !== 'welcome')
       .map((m) => ({
@@ -61,16 +65,10 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
         parts: [m.text],
       }));
 
-    // Append the current user turn to the history slice that is sent to the
-    // model.  We do NOT include it as a separate `prompt` argument so the
-    // Gemini chat session sees a coherent, uninterrupted conversation thread.
     history.push({ role: 'user', parts: [userMessageText] });
 
-    // Call service to request response (history already contains the latest
-    // user message, so we pass an empty string as the prompt).
     const botReplyText = await askGemini('', history);
-    
-    // Append Bot message response
+
     const botMsg: Message = {
       id: Math.random().toString(),
       sender: 'bot',
@@ -114,7 +112,6 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
               msg.sender === 'user' ? 'flex-row-reverse' : ''
             }`}
           >
-            {/* Avatar icon display */}
             <div
               className={`w-7 h-7 rounded-full flex items-center justify-center text-xs shrink-0 ${
                 msg.sender === 'user'
@@ -125,7 +122,6 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
               {msg.sender === 'user' ? <User size={14} /> : <Bot size={14} />}
             </div>
 
-            {/* Bubble */}
             <div
               className={`max-w-[75%] rounded-2xl px-4 py-2.5 text-xs text-left leading-relaxed ${
                 msg.sender === 'user'
@@ -160,6 +156,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
         className="p-4 border-t border-slate-200/60 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 flex items-center gap-2"
       >
         <input
+          ref={inputRef}
           type="text"
           placeholder="Ask something about AuraRing X..."
           value={input}
