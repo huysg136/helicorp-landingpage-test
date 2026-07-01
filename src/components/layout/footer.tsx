@@ -9,7 +9,7 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-left">
           {/* Col 1: Brand details */}
           <div>
-            <h3 className="text-[#004ac6] dark:text-[#6ffbbe] font-bold text-lg mb-4 tracking-tight">
+            <h3 className="text-[#004ac6] dark:text-blue-400 font-bold text-lg mb-4 tracking-tight">
               AuraRing Tech
             </h3>
             <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed max-w-xs">
@@ -24,17 +24,17 @@ export const Footer: React.FC = () => {
             </h4>
             <ul className="space-y-2 text-sm text-slate-500 dark:text-slate-400">
               <li>
-                <a href="#sizing" className="hover:text-[#004ac6] dark:hover:text-[#6ffbbe] transition-colors">
+                <a href="#sizing" className="hover:text-[#004ac6] dark:hover:text-blue-400 transition-colors">
                   Sizing Kit
                 </a>
               </li>
               <li>
-                <a href="#warranty" className="hover:text-[#004ac6] dark:hover:text-[#6ffbbe] transition-colors">
+                <a href="#warranty" className="hover:text-[#004ac6] dark:hover:text-blue-400 transition-colors">
                   Warranty
                 </a>
               </li>
               <li>
-                <a href="#shipping" className="hover:text-[#004ac6] dark:hover:text-[#6ffbbe] transition-colors">
+                <a href="#shipping" className="hover:text-[#004ac6] dark:hover:text-blue-400 transition-colors">
                   Shipping & Returns
                 </a>
               </li>
@@ -48,17 +48,17 @@ export const Footer: React.FC = () => {
             </h4>
             <ul className="space-y-2 text-sm text-slate-500 dark:text-slate-400">
               <li>
-                <a href="#privacy" className="hover:text-[#004ac6] dark:hover:text-[#6ffbbe] transition-colors">
+                <a href="#privacy" className="hover:text-[#004ac6] dark:hover:text-blue-400 transition-colors">
                   Privacy Policy
                 </a>
               </li>
               <li>
-                <a href="#terms" className="hover:text-[#004ac6] dark:hover:text-[#6ffbbe] transition-colors">
+                <a href="#terms" className="hover:text-[#004ac6] dark:hover:text-blue-400 transition-colors">
                   Terms of Service
                 </a>
               </li>
               <li>
-                <a href="#cookies" className="hover:text-[#004ac6] dark:hover:text-[#6ffbbe] transition-colors">
+                <a href="#cookies" className="hover:text-[#004ac6] dark:hover:text-blue-400 transition-colors">
                   Cookie Policy
                 </a>
               </li>

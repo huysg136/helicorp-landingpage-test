@@ -28,21 +28,18 @@ export const ProductConfig: React.FC = () => {
 
   const handleAddToCart = async () => {
     setIsAdding(true);
-    // Add to Zustand cart
     addToCart({
       color: selectedColor.name,
       size: selectedSize,
       quantity: 1,
     });
 
-    // Send mock event dispatch webhook notification
     await sendWebhookNotification({
       event: 'pre_order',
       details: `Pre-ordered AuraRing X (${selectedColor.name}, Size: ${selectedSize})`,
       timestamp: new Date().toLocaleString(),
     });
 
-    // Timeout mock animation
     setTimeout(() => {
       setIsAdding(false);
       alert(`Success! AuraRing X (${selectedColor.name}, Size: ${selectedSize}) added to cart.`);
@@ -62,9 +59,13 @@ export const ProductConfig: React.FC = () => {
     <section
       id="pre-order"
       ref={ref}
-      className="py-24 px-6 bg-white dark:bg-slate-950 transition-colors duration-300"
+      className="relative py-24 px-6 overflow-hidden bg-linear-to-b from-[#f7f9fb] via-[#f7f9fb] to-white dark:from-slate-900 dark:via-slate-900 dark:to-slate-950 transition-colors duration-300"
     >
-      <div className="max-w-300 mx-auto">
+      {/* Dynamic Background Accents - matches Hero */}
+      <div className="absolute top-1/4 left-[10%] w-72 h-72 bg-[#2563eb]/5 dark:bg-[#2563eb]/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/4 right-[10%] w-96 h-96 bg-emerald-500/5 dark:bg-emerald-500/10 rounded-full blur-3xl" />
+
+      <div className="max-w-300 mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
           {/* Left Column: Product Showcase Rendering Image */}
@@ -76,7 +77,7 @@ export const ProductConfig: React.FC = () => {
             <img
               src={productImg}
               alt="AuraRing X Configurator Showcase"
-              className="w-full max-w-105 h-auto object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.15)] hover:scale-102 transition-transform duration-500"
+              className="w-full max-w-105 h-auto object-contain rounded-2xl drop-shadow-[0_15px_30px_rgba(0,0,0,0.15)] dark:drop-shadow-[0_15px_40px_rgba(0,0,0,0.5)] hover:scale-102 transition-transform duration-500"
             />
           </motion.div>
 
@@ -90,8 +91,8 @@ export const ProductConfig: React.FC = () => {
               <h2 className="text-4xl font-bold tracking-tight text-slate-800 dark:text-white mb-2">
                 AuraRing X
               </h2>
-              <p className="text-2xl font-bold text-[#004ac6] dark:text-[#2563eb]">
-                $399.00 USD
+              <p className="text-2xl font-bold text-[#004ac6] dark:text-blue-400">
+                9.990.000 VNĐ
               </p>
             </div>
 
@@ -125,7 +126,7 @@ export const ProductConfig: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => alert('Sizing Kit Guide: We recommend ordering our free sizing kit first. Sizes match US standards (6-9).')}
-                  className="text-xs font-semibold text-[#004ac6] hover:underline"
+                  className="text-xs font-semibold text-[#004ac6] dark:text-blue-400 hover:underline"
                 >
                   Sizing Guide
                 </button>
@@ -144,7 +145,7 @@ export const ProductConfig: React.FC = () => {
             </div>
 
             {/* Actions Block */}
-            <div className="flex items-center gap-4 pt-4 border-t border-slate-100 dark:border-slate-900">
+            <div className="flex items-center gap-4 pt-4 border-t border-slate-100 dark:border-slate-800">
               <Button
                 variant="primary"
                 onClick={handleAddToCart}

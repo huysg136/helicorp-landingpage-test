@@ -87,7 +87,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
       {/* Chat Window Header */}
       <div className="px-5 py-4 bg-slate-50 dark:bg-slate-900 border-b border-slate-200/60 dark:border-slate-800 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-full bg-[#004ac6]/10 dark:bg-[#6ffbbe]/10 flex items-center justify-center text-[#004ac6] dark:text-[#6ffbbe]">
+          <div className="w-8 h-8 rounded-full bg-[#004ac6]/10 dark:bg-[#6ffbbe]/10 flex items-center justify-center text-[#004ac6] dark:text-blue-400">
             <Bot size={18} />
           </div>
           <div className="text-left">
@@ -119,7 +119,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
               className={`w-7 h-7 rounded-full flex items-center justify-center text-xs shrink-0 ${
                 msg.sender === 'user'
                   ? 'bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200'
-                  : 'bg-[#004ac6]/10 text-[#004ac6] dark:bg-[#6ffbbe]/10 dark:text-[#6ffbbe]'
+                  : 'bg-[#004ac6]/10 text-[#004ac6] dark:bg-[#6ffbbe]/10 dark:text-blue-400'
               }`}
             >
               {msg.sender === 'user' ? <User size={14} /> : <Bot size={14} />}
@@ -140,7 +140,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
 
         {isTyping && (
           <div className="flex items-start gap-2.5">
-            <div className="w-7 h-7 rounded-full bg-[#004ac6]/10 text-[#004ac6] dark:bg-[#6ffbbe]/10 dark:text-[#6ffbbe] flex items-center justify-center">
+            <div className="w-7 h-7 rounded-full bg-[#004ac6]/10 text-[#004ac6] dark:bg-[#6ffbbe]/10 dark:text-blue-400 flex items-center justify-center">
               <Bot size={14} />
             </div>
             <div className="bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl rounded-tl-none px-4 py-3 flex items-center gap-1">

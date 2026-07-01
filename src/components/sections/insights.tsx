@@ -18,36 +18,36 @@ const features: Feature[] = [
     description: (
       <>
         Analyze your REM, deep, and light sleep stages with 99% accuracy.{' '}
-        <span className="text-[#004ac6] dark:text-[#6ffbbe]">Wake up refreshed with our smart alarm vibration.</span>
+        <span className="text-[#004ac6] dark:text-blue-400">Wake up refreshed with our smart alarm vibration.</span>
       </>
     ),
     icon: Moon,
-    iconBgColor: 'rgba(99, 102, 241, 0.12)',
-    iconColor: '#6366f1',
+    iconBgColor: 'rgba(96, 165, 250, 0.12)',   // đồng bộ theo blue-400
+    iconColor: '#60a5fa',
   },
   {
     title: 'Heart Rate',
     description: (
       <>
         Continuous monitoring of HRV and blood oxygen (SpO2).{' '}
-        <span className="text-[#004ac6] dark:text-[#6ffbbe]">Get notified of irregular patterns instantly.</span>
+        <span className="text-[#004ac6] dark:text-blue-400">Get notified of irregular patterns instantly.</span>
       </>
     ),
     icon: Heart,
-    iconBgColor: 'rgba(16, 185, 129, 0.12)',
-    iconColor: '#10b981',
+    iconBgColor: 'rgba(52, 211, 153, 0.12)',   // emerald-400, giữ làm điểm nhấn "sức khỏe"
+    iconColor: '#34d399',
   },
   {
     title: 'Titanium Shell',
     description: (
       <>
         Engineered with Grade 5 Titanium.{' '}
-        <span className="text-[#004ac6] dark:text-[#6ffbbe]">Lighter than steel, stronger than carbon. Designed to be worn 24/7.</span>
+        <span className="text-[#004ac6] dark:text-blue-400">Lighter than steel, stronger than carbon. Designed to be worn 24/7.</span>
       </>
     ),
     icon: Shield,
-    iconBgColor: 'rgba(124, 58, 237, 0.12)',
-    iconColor: '#7c3aed',
+    iconBgColor: 'rgba(148, 163, 184, 0.12)',  // slate-400, trung tính thay vì tím
+    iconColor: '#94a3b8',
   },
 ];
 
@@ -92,7 +92,7 @@ export const Insights: React.FC = () => {
             Smaller than a coin, smarter than a watch. AuraRing X packs industry-leading sensors{' '}
             <br className="hidden md:block" />
             into a{' '}
-            <span className="text-[#004ac6] dark:text-[#6ffbbe] font-medium">2.5mm profile.</span>
+            <span className="text-[#004ac6] dark:text-blue-400 font-medium">2.5mm profile.</span>
           </p>
         </motion.div>
 

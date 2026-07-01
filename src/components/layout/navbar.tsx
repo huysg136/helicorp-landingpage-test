@@ -21,10 +21,10 @@ export const Navbar: React.FC = () => {
   return (
     <>
       <nav className="sticky top-0 z-40 w-full backdrop-blur-md bg-white/75 dark:bg-slate-900/75 border-b border-slate-100 dark:border-slate-800 transition-colors duration-300">
-        <div className="max-w-[1200px] mx-auto px-6 h-16 flex items-center justify-between">
+        <div className="max-w-300 mx-auto px-6 h-16 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-2 cursor-pointer" onClick={() => scrollToSection('hero')}>
-            <span className="w-4.5 h-4.5 rounded-full bg-[#004ac6] dark:bg-[#6ffbbe]" />
+            <span className="w-4.5 h-4.5 rounded-full bg-[#004ac6] dark:text-blue-400" />
             <span className="font-bold text-lg text-slate-800 dark:text-white tracking-tight">
               AuraRing X
             </span>
@@ -34,22 +34,22 @@ export const Navbar: React.FC = () => {
           <div className="hidden md:flex items-center gap-8">
             <button
               onClick={() => scrollToSection('features')}
-              className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-[#004ac6] dark:hover:text-[#6ffbbe] transition-colors"
+              className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-[#004ac6] dark:hover:text-blue-400 transition-colors"
             >
               Features
             </button>
             <button
               onClick={() => scrollToSection('specs')}
-              className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-[#004ac6] dark:hover:text-[#6ffbbe] transition-colors"
+              className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-[#004ac6] dark:hover:text-blue-400 transition-colors"
             >
               Specs
             </button>
             <button
               onClick={() => scrollToSection('pre-order')}
-              className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-[#004ac6] dark:hover:text-[#6ffbbe] transition-colors relative"
+              className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-[#004ac6] dark:hover:text-blue-400 transition-colors relative"
             >
               Pre-order
-              <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#004ac6] dark:bg-[#6ffbbe] rounded" />
+              <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#004ac6] dark:text-blue-400 rounded" />
             </button>
           </div>
 
@@ -67,7 +67,7 @@ export const Navbar: React.FC = () => {
             {/* Shopping Cart button */}
             <button
               onClick={() => setIsCartOpen(true)}
-              className="p-2 text-slate-600 dark:text-slate-300 hover:text-[#004ac6] dark:hover:text-[#6ffbbe] transition-colors relative"
+              className="p-2 text-slate-600 dark:text-slate-300 hover:text-[#004ac6] dark:hover:text-blue-400 transition-colors relative"
               title="Cart"
             >
               <ShoppingBag size={20} />
@@ -81,7 +81,7 @@ export const Navbar: React.FC = () => {
             {/* Dark mode switcher */}
             <button
               onClick={toggleTheme}
-              className="p-2 text-slate-600 dark:text-slate-300 hover:text-[#004ac6] dark:hover:text-[#6ffbbe] transition-colors"
+              className="p-2 text-slate-600 dark:text-slate-300 hover:text-[#004ac6] dark:hover:text-blue-400 transition-colors"
               title="Toggle theme"
             >
               {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
@@ -114,7 +114,7 @@ export const Navbar: React.FC = () => {
             </button>
             <button
               onClick={() => scrollToSection('pre-order')}
-              className="text-left py-2 font-medium text-slate-600 dark:text-slate-300 hover:text-[#004ac6] text-[#004ac6] dark:text-[#6ffbbe]"
+              className="text-left py-2 font-medium text-slate-600 dark:text-slate-300 hover:text-[#004ac6] text-[#004ac6] dark:text-blue-400"
             >
               Pre-order
             </button>
@@ -174,7 +174,7 @@ export const Navbar: React.FC = () => {
                         <p className="text-xs text-slate-500 dark:text-slate-400">
                           Size: {item.size} • Qty: {item.quantity}
                         </p>
-                        <p className="text-sm font-bold text-[#004ac6] dark:text-[#6ffbbe] mt-1">
+                        <p className="text-sm font-bold text-[#004ac6] dark:text-blue-400 mt-1">
                           ${item.price * item.quantity} USD
                         </p>
                       </div>
@@ -195,7 +195,7 @@ export const Navbar: React.FC = () => {
                 <div className="px-6 py-6 border-t border-slate-100 dark:border-slate-900 bg-slate-50/50 dark:bg-slate-950/50 space-y-4">
                   <div className="flex items-center justify-between text-sm font-semibold text-slate-800 dark:text-white">
                     <span>Total Amount:</span>
-                    <span className="text-lg font-bold text-[#004ac6] dark:text-[#6ffbbe]">
+                    <span className="text-lg font-bold text-[#004ac6] dark:text-blue-400">
                       ${totalCartPrice} USD
                     </span>
                   </div>

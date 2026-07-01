@@ -34,7 +34,7 @@ export const Hero: React.FC = () => {
           className="flex flex-col text-left space-y-6 max-w-xl"
         >
           {/* Tagline Badge */}
-          <div className="inline-flex items-center gap-1.5 self-start px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-[#6ffbbe] text-[10px] font-bold tracking-wider uppercase">
+          <div className="inline-flex items-center gap-1.5 self-start px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-blue-400 text-[10px] font-bold tracking-wider uppercase">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
             Next Gen Health
           </div>

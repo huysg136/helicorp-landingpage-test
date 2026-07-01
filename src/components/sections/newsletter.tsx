@@ -22,7 +22,6 @@ export const Newsletter: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Reset Validation statuses
     let isValid = true;
     setNameError('');
     setEmailError('');
@@ -42,7 +41,6 @@ export const Newsletter: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      // Dispatches Webhook Notification
       await sendWebhookNotification({
         event: 'newsletter',
         email: email.trim(),
@@ -66,14 +64,17 @@ export const Newsletter: React.FC = () => {
     <section
       id="newsletter"
       ref={ref}
-      className="py-24 px-6 bg-[#f8fafc] dark:bg-slate-950 transition-colors duration-300"
+      className="py-24 px-6 bg-[#f8fafc] dark:bg-[#0a0e14] transition-colors duration-300"
     >
       <div className="max-w-160 mx-auto text-center">
         <motion.div
           animate={controls}
           initial={initial}
-          className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl p-8 lg:p-12 shadow-xl shadow-slate-900/5 dark:shadow-none space-y-8"
+          className="relative overflow-hidden bg-white dark:bg-[#12161f] border border-slate-100 dark:border-slate-800/60 rounded-3xl p-8 lg:p-12 shadow-xl shadow-slate-900/5 dark:shadow-2xl dark:shadow-black/40 space-y-8"
         >
+          {/* Top gradient bar */}
+          <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-blue-500 via-cyan-400 to-emerald-400" />
+
           {/* Header */}
           <div className="space-y-3">
             <h2 className="text-3xl font-bold tracking-tight text-slate-800 dark:text-white">
@@ -99,6 +100,7 @@ export const Newsletter: React.FC = () => {
                 onChange={(e) => setName(e.target.value)}
                 error={nameError}
                 disabled={isSubmitting}
+                className="bg-slate-50 dark:bg-[#191d27] border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 rounded-xl h-12 px-4 focus-visible:ring-1 focus-visible:ring-[#004ac6]/40 dark:focus-visible:ring-cyan-400/50"
               />
               <Input
                 id="emailAddressInput"
@@ -108,13 +110,14 @@ export const Newsletter: React.FC = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 error={emailError}
                 disabled={isSubmitting}
+                className="bg-slate-50 dark:bg-[#191d27] border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 rounded-xl h-12 px-4 focus-visible:ring-1 focus-visible:ring-[#004ac6]/40 dark:focus-visible:ring-cyan-400/50"
               />
               
               <Button
                 variant="primary"
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-[#191c1e] hover:bg-slate-800 text-white dark:bg-[#191c1e] shadow-none"
+                className="w-full bg-[#191c1e] hover:bg-slate-800 text-white dark:bg-white dark:hover:bg-slate-100 dark:text-[#12161f] font-semibold rounded-xl h-12 shadow-none"
               >
                 {isSubmitting ? 'Registering...' : 'Get Early Access'}
               </Button>
@@ -122,12 +125,13 @@ export const Newsletter: React.FC = () => {
           )}
 
           {/* Privacy Note */}
-          <p className="text-[10px] text-slate-400 dark:text-slate-500">
-            By subscribing, you agree to our Privacy Policy.
+          <p className="text-[11px] text-slate-400 dark:text-slate-500">
+            By subscribing, you agree to our{' '}
+            <span className="text-slate-600 dark:text-slate-300 underline underline-offset-2">Privacy Policy</span>.
           </p>
 
         </motion.div>
       </div>
     </section>
   );
-};
+};  
