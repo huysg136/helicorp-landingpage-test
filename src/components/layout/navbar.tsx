@@ -21,7 +21,7 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      <nav className="sticky top-0 z-40 w-full backdrop-blur-md bg-white/75 dark:bg-slate-900/75 border-b border-slate-100 dark:border-slate-800 transition-colors duration-300">
+      <nav className="sticky top-0 z-40 mx-2 w-full backdrop-blur-md bg-white/75 dark:bg-slate-900/75 border-b border-slate-100 dark:border-slate-800 transition-colors duration-300">
         <div className="max-w-300 mx-auto h-16 flex items-center justify-between">
           <div className="flex items-center gap-2 cursor-pointer" onClick={() => scrollToSection('hero')}>
             <img 
@@ -94,7 +94,9 @@ export const Navbar: React.FC = () => {
             {/* Mobile Menu trigger */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2 text-slate-600 dark:text-slate-300"
+              className="md:hidden p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+              aria-label={isMenuOpen ? "Đóng menu điều hướng" : "Mở menu điều hướng"} 
+              aria-expanded={isMenuOpen} 
             >
               {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
