@@ -73,10 +73,6 @@ export const ProductConfig: React.FC = () => {
             initial={initial}
             className="relative bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl p-8 overflow-hidden flex flex-col justify-between aspect-[4/3] md:aspect-square"
           >
-            {/* Tagline */}
-            <div className="absolute top-6 left-6 px-3 py-1 rounded-full bg-white/80 dark:bg-slate-800/80 backdrop-blur text-slate-500 dark:text-slate-400 text-[10px] font-bold tracking-wider uppercase border border-slate-100 dark:border-slate-800 shadow-sm z-10">
-              Limited Edition Finish Available
-            </div>
             
             {/* Visual variants block */}
             <div className="flex-1 flex items-center justify-center">
