@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Button } from '../ui/button';
 import { Play, CheckCircle } from 'lucide-react';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
-import heroImg from '../../assets/images/hero-ring.png'
+import heroImg from '../../assets/images/hero-ring.webp'
 
 export const Hero: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);

@@ -7,7 +7,7 @@ import { useStore } from '../../store/useStore';
 import { sendWebhookNotification } from '../../services/webhook';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 import { Heart } from 'lucide-react';
-import productImg from '../../assets/images/product-variants.png';
+import productImg from '../../assets/images/product-variants.webp';
 
 export const ProductConfig: React.FC = () => {
   const { addToCart, wishlist, toggleWishlist } = useStore();
