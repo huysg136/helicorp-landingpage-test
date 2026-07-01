@@ -71,7 +71,7 @@ export const ProductConfig: React.FC = () => {
           <motion.div
             animate={controls}
             initial={initial}
-            className="relative bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl p-8 overflow-hidden flex flex-col justify-between aspect-[4/3] md:aspect-square"
+            className="relative bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl p-8 overflow-hidden flex flex-col justify-between aspect-4/3 md:aspect-square"
           >
             
             {/* Visual variants block */}
@@ -79,7 +79,7 @@ export const ProductConfig: React.FC = () => {
               <img
                 src={productImg}
                 alt="AuraRing X Configurator Showcase"
-                className="w-full max-w-[420px] h-auto object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.15)] hover:scale-105 transition-transform duration-500"
+                className="w-full max-w-105 h-auto object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.15)] hover:scale-105 transition-transform duration-500"
               />
             </div>
           </motion.div>
