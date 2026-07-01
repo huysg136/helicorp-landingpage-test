@@ -1,8 +1,7 @@
 @import "tailwindcss";
 
-@theme {
-  --variant-dark: &.dark, .dark &;
-}
+/* Tailwind v4: Class-based dark mode (not system preference) */
+@custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
   body {

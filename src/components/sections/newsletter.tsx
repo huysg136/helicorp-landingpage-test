@@ -68,7 +68,7 @@ export const Newsletter: React.FC = () => {
       ref={ref}
       className="py-24 px-6 bg-[#f8fafc] dark:bg-slate-950 transition-colors duration-300"
     >
-      <div className="max-w-[640px] mx-auto text-center">
+      <div className="max-w-160 mx-auto text-center">
         <motion.div
           animate={controls}
           initial={initial}

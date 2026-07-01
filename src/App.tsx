@@ -36,7 +36,7 @@ const App: React.FC = () => {
       <Navbar />
 
       {/* Main Sections */}
-      <main className="max-w-[1200px] mx-auto">
+      <main className="max-w-300 mx-auto">
         <Hero />
         <Insights />
         <SpecsGrid />

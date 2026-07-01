@@ -3,7 +3,7 @@ import { LucideIcon } from 'lucide-react';
 
 interface FeatureCardProps {
   title: string;
-  description: string;
+  description: React.ReactNode;
   icon: LucideIcon;
   iconBgColor: string;
   iconColor: string;
@@ -17,17 +17,22 @@ export const FeatureCard: React.FC<FeatureCardProps> = ({
   iconColor,
 }) => {
   return (
-    <div className="bg-[#f8fafc] dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl p-6 shadow-sm hover:shadow-md hover:border-slate-200 dark:hover:border-slate-700 transition-all duration-300 flex flex-col text-left">
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-300 flex flex-col text-left h-full">
+      {/* Icon box */}
       <div
-        className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-transform duration-300 hover:scale-110"
-        style={{ backgroundColor: iconBgColor, color: iconColor }}
+        className="w-10 h-10 rounded-xl flex items-center justify-center mb-5"
+        style={{ backgroundColor: iconBgColor }}
       >
-        <Icon size={24} />
+        <Icon size={20} style={{ color: iconColor }} />
       </div>
-      <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-100 mb-2">
+
+      {/* Title */}
+      <h3 className="text-base font-bold text-slate-800 dark:text-slate-100 mb-2">
         {title}
       </h3>
-      <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+
+      {/* Description */}
+      <p className="text-sm leading-relaxed text-slate-500 dark:text-slate-400">
         {description}
       </p>
     </div>

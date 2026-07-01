@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Button } from '../ui/button';
 import { Play, CheckCircle } from 'lucide-react';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
-import heroImg from '../../assets/images/hero-ring.png';
+import heroImg from '../../assets/images/hero-ring.png'
 
 export const Hero: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -20,13 +20,13 @@ export const Hero: React.FC = () => {
     <section
       id="hero"
       ref={ref}
-      className="relative min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-6 overflow-hidden bg-gradient-to-b from-[#f7f9fb] via-[#f7f9fb] to-white dark:from-slate-900 dark:via-slate-900 dark:to-slate-950 transition-colors duration-300"
+      className="relative min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-6 overflow-hidden bg-linear-to-b from-[#f7f9fb] via-[#f7f9fb] to-white dark:from-slate-900 dark:via-slate-900 dark:to-slate-950 transition-colors duration-300"
     >
       {/* Dynamic Background Accents */}
-      <div className="absolute top-1/4 left-1/10 w-72 h-72 bg-[#2563eb]/5 dark:bg-[#2563eb]/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-1/4 right-1/10 w-96 h-96 bg-emerald-500/5 dark:bg-emerald-500/10 rounded-full blur-3xl" />
+      <div className="absolute top-1/4 left-[10%] w-72 h-72 bg-[#2563eb]/5 dark:bg-[#2563eb]/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/4 right-[10%] w-96 h-96 bg-emerald-500/5 dark:bg-emerald-500/10 rounded-full blur-3xl" />
 
-      <div className="max-w-[1200px] w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+      <div className="max-w-300 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
         {/* Left Info Column */}
         <motion.div
           animate={controls}
@@ -85,9 +85,9 @@ export const Hero: React.FC = () => {
           className="flex justify-center items-center relative"
         >
           {/* Card shadow reflection background panel */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-[#004ac6]/10 to-emerald-500/10 dark:from-[#2563eb]/20 dark:to-emerald-500/20 rounded-3xl blur-2xl -z-10 transform scale-95" />
-          
-          <div className="p-4 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md rounded-3xl border border-white/20 shadow-2xl relative max-w-[420px] w-full aspect-square flex items-center justify-center overflow-hidden">
+          <div className="absolute inset-0 bg-linear-to-tr from-[#004ac6]/10 to-emerald-500/10 dark:from-[#2563eb]/20 dark:to-emerald-500/20 rounded-3xl blur-2xl -z-10 transform scale-95" />
+
+          <div className="p-4 bg-white/60 dark:bg-slate-900/60 backdrop-blur-md rounded-3xl border border-white/20 shadow-2xl relative max-w-105 w-full aspect-square flex items-center justify-center overflow-hidden">
             <img
               src={heroImg}
               alt="AuraRing X Ring Render"
