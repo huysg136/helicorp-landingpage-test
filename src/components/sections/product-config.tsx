@@ -66,22 +66,18 @@ export const ProductConfig: React.FC = () => {
     >
       <div className="max-w-300 mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          
+
           {/* Left Column: Product Showcase Rendering Image */}
           <motion.div
             animate={controls}
             initial={initial}
-            className="relative bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl overflow-hidden flex flex-col justify-between md:aspect-square"
+            className="relative flex items-center justify-center"
           >
-            
-            {/* Visual variants block */}
-            <div className="flex-1 flex items-center justify-center">
-              <img
-                src={productImg}
-                alt="AuraRing X Configurator Showcase"
-                className="w-full max-w-105 h-auto object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.15)] hover:scale-105 transition-transform duration-500"
-              />
-            </div>
+            <img
+              src={productImg}
+              alt="AuraRing X Configurator Showcase"
+              className="w-full max-w-105 h-auto object-contain drop-shadow-[0_15px_30px_rgba(0,0,0,0.15)] hover:scale-102 transition-transform duration-500"
+            />
           </motion.div>
 
           {/* Right Column: Interactive Configuration Form Details */}
@@ -134,7 +130,7 @@ export const ProductConfig: React.FC = () => {
                   Sizing Guide
                 </button>
               </div>
-              
+
               <div className="flex items-center gap-3">
                 {sizes.map((s) => (
                   <SizeBadge
@@ -157,7 +153,7 @@ export const ProductConfig: React.FC = () => {
               >
                 {isAdding ? 'Adding...' : 'Add to Cart'}
               </Button>
-              
+
               <button
                 type="button"
                 onClick={handleToggleWishlist}

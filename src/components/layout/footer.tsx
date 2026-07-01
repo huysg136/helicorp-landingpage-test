@@ -5,12 +5,12 @@ export const Footer: React.FC = () => {
 
   return (
     <footer className="w-full bg-[#f8fafc] dark:bg-slate-950 border-t border-slate-100 dark:border-slate-900 transition-colors duration-300">
-      <div className="max-w-[1200px] mx-auto px-6 py-16">
+      <div className="max-w-300 mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-left">
           {/* Col 1: Brand details */}
           <div>
             <h3 className="text-[#004ac6] dark:text-[#6ffbbe] font-bold text-lg mb-4 tracking-tight">
-              AuraRing Tech
+              AuraRing X
             </h3>
             <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed max-w-xs">
               Revolutionizing the way we connect with our biological rhythms. Founded in 2026.
@@ -69,7 +69,7 @@ export const Footer: React.FC = () => {
         {/* Bottom credits */}
         <div className="mt-16 pt-8 border-t border-slate-200 dark:border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-slate-400 dark:text-slate-500">
-            © {currentYear} AuraRing Tech. All rights reserved.
+            © {currentYear} AuraRing X. All rights reserved.
           </p>
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 bg-emerald-500 rounded-full animate-ping" />
