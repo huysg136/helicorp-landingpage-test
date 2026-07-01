@@ -78,6 +78,8 @@ export const ProductConfig: React.FC = () => {
               src={productImg}
               alt="AuraRing X Configurator Showcase"
               className="w-full max-w-105 h-auto object-contain rounded-2xl drop-shadow-[0_15px_30px_rgba(0,0,0,0.15)] dark:drop-shadow-[0_15px_40px_rgba(0,0,0,0.5)] hover:scale-102 transition-transform duration-500"
+              loading="lazy"
+              decoding="async"
             />
           </motion.div>
 
