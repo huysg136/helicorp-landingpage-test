@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useStore } from '../../store/useStore';
 import { Menu, X, Heart, ShoppingBag, Sun, Moon, Trash2 } from 'lucide-react';
+import logoImg from '../../assets/logo/logo.webp'
 
 export const Navbar: React.FC = () => {
   const { wishlist, cart, theme, toggleWishlist, toggleTheme, removeFromCart, clearCart } = useStore();
@@ -21,10 +22,13 @@ export const Navbar: React.FC = () => {
   return (
     <>
       <nav className="sticky top-0 z-40 w-full backdrop-blur-md bg-white/75 dark:bg-slate-900/75 border-b border-slate-100 dark:border-slate-800 transition-colors duration-300">
-        <div className="max-w-300 mx-auto px-6 h-16 flex items-center justify-between">
-          {/* Logo */}
+        <div className="max-w-300 mx-auto h-16 flex items-center justify-between">
           <div className="flex items-center gap-2 cursor-pointer" onClick={() => scrollToSection('hero')}>
-            <span className="w-4.5 h-4.5 rounded-full bg-[#004ac6] dark:text-blue-400" />
+            <img 
+              src={logoImg}
+              alt="AuraRing Logo" 
+              className="w-12 h-12" 
+            />
             <span className="font-bold text-lg text-slate-800 dark:text-white tracking-tight">
               AuraRing X
             </span>
