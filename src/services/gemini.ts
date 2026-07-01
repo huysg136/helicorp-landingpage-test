@@ -1,10 +1,8 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
-
-// Initialize Gemini client. 
-// Uses API Key from environment or falls back to standard client side API simulation.
+// Uses Groq's OpenAI-compatible chat completions endpoint.
+// API Key from environment or falls back to standard client side simulation.
 const API_KEY = import.meta.env.VITE_AI_API_KEY || '';
-
-const genAI = API_KEY ? new GoogleGenerativeAI(API_KEY) : null;
+const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
+const GROQ_MODEL = 'llama-3.3-70b-versatile';
 
 const SYSTEM_INSTRUCTION = `
 You are AuraRing X AI assistant, a smart health consultant designed by AuraRing Tech.
@@ -19,76 +17,110 @@ Key specifications of AuraRing X:
 - Features: Sleep Tracking (REM, deep, light stages with 99% accuracy), Heart Rate monitoring (continuous HRV, SpO2, irregular pulse warnings), body temperature variation, activity level tracking.
 - Sizes: 6, 7, 8, 9 (Sizing Kit is sent first to determine exact fit).
 
-Always reply politely and concisely. Support multiple languages, but prefer replying in the user's language (e.g. Vietnamese if they ask in Vietnamese). Keep answers under 3 sentences if possible.
+Về văn phong ứng xử:
+Luôn luôn dạ thưa lễ phép, sử dụng các từ ngữ ngọt ngào, tinh tế ở đầu mỗi lần chat như Dạ anh chị, Dạ em chào anh chị, Dạ vâng ạ. Và ạ ở cuối câu.
+Luôn làm sao cho khách dễ chốt đơn
+Giữ câu trả lời ngắn gọn, cô đọng dưới 3 câu nhưng đầy đủ sự chu đáo.
+
 IMPORTANT: Do NOT use any markdown formatting (no **bold**, no *italic*, no bullet points with *, no headers). Write in plain text only.
 `;
 
-export const askGemini = async (prompt: string, chatHistory: { role: 'user' | 'model'; parts: string[] }[] = []): Promise<string> => {
-  if (!genAI) {
-    // Simulated delay & response for demo when API key is missing
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    // Determine the actual user text: either the explicit prompt or the last
-    // user turn appended to chatHistory.
-    const userText = prompt || chatHistory.filter((m) => m.role === 'user').slice(-1)[0]?.parts[0] || '';
-    const promptLower = userText.toLowerCase();
-    if (promptLower.includes('giá') || promptLower.includes('price') || promptLower.includes('bao nhiêu')) {
-      return 'AuraRing X hiện tại có giá bán là 9.990.000 ₫ kèm theo bộ Sizing Kit đo size tay miễn phí.';
+type ChatTurn = { role: 'user' | 'model'; parts: string[] };
+type GroqMessage = { role: 'system' | 'user' | 'assistant'; content: string };
+
+// Simulated fallback response, reused when no API key or when the real call fails.
+const getSimulatedResponse = async (prompt: string, chatHistory: ChatTurn[]): Promise<string> => {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  const userText = prompt || chatHistory.filter((m) => m.role === 'user').slice(-1)[0]?.parts[0] || '';
+  const promptLower = userText.toLowerCase();
+  
+  if (promptLower.includes('giá') || promptLower.includes('price') || promptLower.includes('bao nhiêu')) {
+    return 'Dạ AuraRing X hiện tại có giá bán chính thức là 9.990.000 ₫ ạ. Khi anh chị đặt mua hôm nay sẽ được tặng kèm bộ Sizing Kit đo size tay miễn phí tận nhà, mình nhấn Add to Cart để giữ ưu đãi liền nhé.';
+  }
+  if (promptLower.includes('pin') || promptLower.includes('battery')) {
+    return 'Dạ nhẫn AuraRing X sở hữu thời lượng pin rất bền bỉ lên đến 7 ngày và sạc đầy siêu tốc chỉ trong 60 phút thôi ạ. Anh chị có thể yên tâm đeo theo dõi sức khỏe cả tuần dài mà không lo gián đoạn đâu ạ.';
+  }
+  if (promptLower.includes('chống nước') || promptLower.includes('water')) {
+    return 'Dạ siêu phẩm này đạt chuẩn chống nước chuyên sâu lên đến 50m lặn biển thoải mái ạ. Mình cứ an tâm đeo nhẫn khi đi tắm, bơi lội hay vận động thể thao mà không cần tháo ra đâu ạ.';
+  }
+  if (promptLower.includes('size') || promptLower.includes('kích thước')) {
+    return 'Dạ bên em có sẵn các size từ 6 đến 9 phù hợp cho mọi cỡ tay ạ. Anh chị cứ yên tâm chọn mua, bên em sẽ gửi một bộ Sizing Kit mẫu đến tận nhà để mình đeo thử và chọn được size chuẩn xác nhất hoàn toàn miễn phí ạ.';
+  }
+  
+  return 'Dạ em chào anh chị ạ. Trợ lý Aura Assistant rất vinh hạnh được tư vấn cho mình về siêu phẩm nhẫn thông minh Titanium AuraRing X, anh chị cần em hỗ trợ thông tin gì để chuẩn bị đặt hàng ạ?';
+};
+
+// Converts our { role: 'user'|'model', parts: string[] } shape into
+// Groq/OpenAI's { role: 'user'|'assistant', content: string } shape.
+const toGroqMessages = (prompt: string, chatHistory: ChatTurn[]): GroqMessage[] => {
+  let historySlice = chatHistory;
+  let messageToSend = prompt;
+
+  if (!messageToSend && chatHistory.length > 0) {
+    const last = chatHistory[chatHistory.length - 1];
+    if (last.role === 'user') {
+      historySlice = chatHistory.slice(0, -1);
+      messageToSend = last.parts[0];
     }
-    if (promptLower.includes('pin') || promptLower.includes('battery')) {
-      return 'Nhẫn có thời lượng pin lên đến 7 ngày và sạc đầy chỉ trong 60 phút qua đế sạc nam châm đi kèm.';
-    }
-    if (promptLower.includes('chống nước') || promptLower.includes('water')) {
-      return 'AuraRing X đạt chuẩn chống nước 50m, hoàn toàn an toàn khi đi tắm, bơi lội hoặc lặn biển.';
-    }
-    if (promptLower.includes('size') || promptLower.includes('kích thước')) {
-      return 'Chúng tôi cung cấp các size từ 6 đến 9. Khi đặt mua, bạn sẽ được nhận Sizing Kit trước để đo chính xác nhất.';
-    }
-    return 'Xin chào! Tôi có thể giúp bạn giải đáp mọi thông tin về tính năng, thời lượng pin, thiết kế Titanium, và mức giá của AuraRing X.';
   }
 
-  try {
-    const model = genAI.getGenerativeModel({
-      model: 'gemini-2.5-flash',
-      // Pass system instruction at the model level so it applies to every turn
-      // without polluting the conversation history.
-      systemInstruction: SYSTEM_INSTRUCTION,
-    });
+  const historyMessages: GroqMessage[] = historySlice.map((entry) => ({
+    role: entry.role === 'model' ? 'assistant' : 'user',
+    content: entry.parts.join('\n'),
+  }));
 
-    // When the caller appends the latest user message to chatHistory (and
-    // passes an empty prompt), we pop that last entry to use as the
-    // sendMessage payload, while the rest becomes the prior context.
-    let historySlice = chatHistory;
-    let messageToSend = prompt;
+  return [
+    { role: 'system', content: SYSTEM_INSTRUCTION },
+    ...historyMessages,
+    { role: 'user', content: messageToSend },
+  ];
+};
 
-    if (!messageToSend && chatHistory.length > 0) {
-      const last = chatHistory[chatHistory.length - 1];
-      if (last.role === 'user') {
-        historySlice = chatHistory.slice(0, -1); // everything before the latest user turn
-        messageToSend = last.parts[0];           // the latest user turn becomes the prompt
+const isRetryableStatus = (status: number) => status === 429 || status === 503;
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+export const askGemini = async (prompt: string, chatHistory: ChatTurn[] = []): Promise<string> => {
+  if (!API_KEY) {
+    return getSimulatedResponse(prompt, chatHistory);
+  }
+
+  const messages = toGroqMessages(prompt, chatHistory);
+  const MAX_RETRIES = 3;
+  let lastError: unknown;
+
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    try {
+      const response = await fetch(GROQ_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: GROQ_MODEL,
+          messages,
+          max_tokens: 200,
+        }),
+      });
+
+      if (!response.ok) {
+        if (isRetryableStatus(response.status) && attempt < MAX_RETRIES) {
+          await sleep(1000 * Math.pow(2, attempt));
+          continue;
+        }
+        throw new Error(`Groq API error: ${response.status} ${response.statusText}`);
       }
+
+      const data = await response.json();
+      return data.choices?.[0]?.message?.content ?? '';
+    } catch (error) {
+      lastError = error;
+      console.error(`Error calling Groq API (attempt ${attempt + 1}/${MAX_RETRIES + 1}):`, error);
+      if (attempt >= MAX_RETRIES) break;
+      await sleep(1000 * Math.pow(2, attempt));
     }
-
-    // The Gemini SDK's `Content.parts` type expects `Part[]` (objects like
-    // `{ text: string }`), not plain strings. Convert our simpler
-    // `parts: string[]` shape into the SDK's expected format here, so
-    // callers of `askGemini` can keep passing plain strings.
-    const formattedHistory = historySlice.map((entry) => ({
-      role: entry.role,
-      parts: entry.parts.map((text) => ({ text })),
-    }));
-
-    const chat = model.startChat({
-      history: formattedHistory,
-      generationConfig: {
-        maxOutputTokens: 200,
-      },
-    });
-
-    const result = await chat.sendMessage(messageToSend);
-    const response = await result.response;
-    return response.text();
-  } catch (error) {
-    console.error('Error calling Gemini API:', error);
-    return 'Xin lỗi, kết nối tới trợ lý AI đang bị gián đoạn. Bạn có thể hỏi lại sau ít phút hoặc xem thêm thông tin chi tiết trên trang web.';
   }
+
+  console.error('Groq API failed after retries, falling back to simulated response:', lastError);
+  return getSimulatedResponse(prompt, chatHistory);
 };
