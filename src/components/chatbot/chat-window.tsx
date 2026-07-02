@@ -81,7 +81,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed bottom-24 right-6 z-50 w-[360px] sm:w-[380px] h-[500px] bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col animate-fadeIn">
+    <div className="fixed bottom-24 right-6 z-50 w-90 sm:w-95 h-125 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col animate-fadeIn">
       {/* Chat Window Header */}
       <div className="px-5 py-4 bg-slate-50 dark:bg-slate-900 border-b border-slate-200/60 dark:border-slate-800 flex items-center justify-between">
         <div className="flex items-center gap-2.5">

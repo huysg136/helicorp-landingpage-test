@@ -3,9 +3,11 @@ import { motion } from 'framer-motion';
 import { Button } from '../ui/button';
 import { Play, CheckCircle } from 'lucide-react';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
+import { useToastStore } from '../../store/useToastStore';
 import heroImg from '../../assets/images/hero-ring.webp'
 
 export const Hero: React.FC = () => {
+  const { addToast } = useToastStore();
   const containerRef = useRef<HTMLDivElement>(null);
   const { ref, controls, initial } = useScrollAnimation(containerRef);
 
@@ -69,7 +71,7 @@ export const Hero: React.FC = () => {
             </Button>
             <Button
               variant="secondary"
-              onClick={() => alert('Watch Film: Introducing the AuraRing X (Coming Soon!)')}
+              onClick={() => addToast('Watch Film: Introducing the AuraRing X (Coming Soon!)', 'info')}
             >
               <Play size={16} className="fill-slate-800 dark:fill-white text-slate-800 dark:text-white" />
               Watch Film

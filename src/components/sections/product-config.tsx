@@ -4,13 +4,14 @@ import { ColorSwatch } from '../ui/color-swatch';
 import { SizeBadge } from '../ui/size-badge';
 import { Button } from '../ui/button';
 import { useStore } from '../../store/useStore';
-import { sendWebhookNotification } from '../../services/webhook';
+import { useToastStore } from '../../store/useToastStore';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 import { Heart } from 'lucide-react';
 import productImg from '../../assets/images/product-variants.webp';
 
 export const ProductConfig: React.FC = () => {
   const { addToCart, wishlist, toggleWishlist } = useStore();
+  const { addToast } = useToastStore();
   const containerRef = useRef<HTMLDivElement>(null);
   const { ref, controls, initial } = useScrollAnimation(containerRef);
 
@@ -26,7 +27,7 @@ export const ProductConfig: React.FC = () => {
   const [selectedSize, setSelectedSize] = useState(sizes[2]); // Default size 8
   const [isAdding, setIsAdding] = useState(false);
 
-  const handleAddToCart = async () => {
+  const handleAddToCart = () => {
     setIsAdding(true);
     addToCart({
       color: selectedColor.name,
@@ -34,25 +35,15 @@ export const ProductConfig: React.FC = () => {
       quantity: 1,
     });
 
-    await sendWebhookNotification({
-      event: 'pre_order',
-      details: `Pre-ordered AuraRing X (${selectedColor.name}, Size: ${selectedSize})`,
-      timestamp: new Date().toLocaleString(),
-    });
-
     setTimeout(() => {
       setIsAdding(false);
-      alert(`Success! AuraRing X (${selectedColor.name}, Size: ${selectedSize}) added to cart.`);
+      addToast(`Success! AuraRing X (${selectedColor.name}, Size: ${selectedSize}) added to cart.`, 'success');
     }, 800);
   };
 
-  const handleToggleWishlist = async () => {
+  const handleToggleWishlist = () => {
     toggleWishlist();
-    await sendWebhookNotification({
-      event: 'wishlist_toggle',
-      details: `Toggled wishlist. Current State: ${!wishlist ? 'Active' : 'Inactive'}`,
-      timestamp: new Date().toLocaleString(),
-    });
+    addToast(!wishlist ? 'Added to wishlist!' : 'Removed from wishlist!', 'success');
   };
 
   return (
@@ -127,7 +118,7 @@ export const ProductConfig: React.FC = () => {
                 </span>
                 <button
                   type="button"
-                  onClick={() => alert('Sizing Kit Guide: We recommend ordering our free sizing kit first. Sizes match US standards (6-9).')}
+                  onClick={() => addToast('Sizing Kit Guide: We recommend ordering our free sizing kit first. Sizes match US standards (6-9).', 'info')}
                   className="text-xs font-semibold text-[#004ac6] dark:text-blue-400 hover:underline"
                 >
                   Sizing Guide

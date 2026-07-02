@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useStore } from '../../store/useStore';
+import { useToastStore } from '../../store/useToastStore';
 import { Menu, X, Heart, ShoppingBag, Sun, Moon, Trash2, Sparkles, Gauge, PackageCheck, ChevronRight } from 'lucide-react';
 import logoImg from '../../assets/logo/logo.webp'
 
@@ -12,6 +13,7 @@ const navLinks = [
 
 export const Navbar: React.FC = () => {
   const { wishlist, cart, theme, toggleWishlist, toggleTheme, removeFromCart, clearCart } = useStore();
+  const { addToast } = useToastStore();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
@@ -38,11 +40,31 @@ export const Navbar: React.FC = () => {
     }
   };
 
+  const scrollToTop = () => {
+    const isMobileMenuOpen = isMenuOpen;
+    setIsMenuOpen(false);
+
+    const doScrollTop = () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    };
+
+    if (isMobileMenuOpen) {
+      // Đợi animation đóng mobile menu hoàn tất (300ms) rồi mới cuộn lên,
+      // Tránh việc layout bị giật do menu co lại cùng lúc với scroll.
+      setTimeout(doScrollTop, 300);
+    } else {
+      doScrollTop();
+    }
+  };
+
   return (
     <>
       <nav className="sticky top-0 z-40 w-full backdrop-blur-md bg-white/75 dark:bg-slate-900/75 border-b border-slate-100 dark:border-slate-800 transition-colors duration-300">
         <div className="max-w-300 mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2 cursor-pointer group" onClick={() => scrollToSection('hero')}>
+          <div className="flex items-center gap-2 cursor-pointer group" onClick={() => scrollToTop()}>
             <img
               src={logoImg}
               alt="AuraRing Logo"
@@ -248,7 +270,8 @@ export const Navbar: React.FC = () => {
                     </button>
                     <button
                       onClick={() => {
-                        alert('Pre-order Checkout is simulated! Form webhook sent to admin.');
+                        addToast('Pre-order Checkout is simulated!', 'info');
+                        clearCart();
                         setIsCartOpen(false);
                       }}
                       className="px-4 py-2.5 rounded-xl bg-[#004ac6] hover:bg-[#2563eb] text-xs font-semibold text-white transition-all text-center shadow-md shadow-[#004ac6]/10"

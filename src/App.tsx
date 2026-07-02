@@ -8,6 +8,7 @@ import { Newsletter } from './components/sections/newsletter';
 import { Footer } from './components/layout/footer';
 import { ChatButton } from './components/chatbot/chat-button';
 import { ChatWindow } from './components/chatbot/chat-window';
+import { ToastContainer } from './components/ui/toast';
 
 const App: React.FC = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -50,6 +51,9 @@ const App: React.FC = () => {
       {/* Chatbot module */}
       <ChatButton onClick={() => setIsChatOpen(!isChatOpen)} isOpen={isChatOpen} />
       {isChatOpen && <ChatWindow onClose={() => setIsChatOpen(false)} />}
+
+      {/* Global Toast Container */}
+      <ToastContainer />
     </div>
   );
 };

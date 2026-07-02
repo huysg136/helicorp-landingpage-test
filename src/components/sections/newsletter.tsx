@@ -3,10 +3,11 @@ import { motion } from 'framer-motion';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { validateEmail, validateName } from '../../utils/validation';
-import { sendWebhookNotification } from '../../services/webhook';
+import { useToastStore } from '../../store/useToastStore';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 
 export const Newsletter: React.FC = () => {
+  const { addToast } = useToastStore();
   const containerRef = useRef<HTMLDivElement>(null);
   const { ref, controls, initial } = useScrollAnimation(containerRef);
 
@@ -41,20 +42,16 @@ export const Newsletter: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      await sendWebhookNotification({
-        event: 'newsletter',
-        email: email.trim(),
-        name: name.trim(),
-        details: 'User registered via newsletter stay ahead subscription form',
-        timestamp: new Date().toLocaleString(),
-      });
+      // Simulate network request delay
+      await new Promise((resolve) => setTimeout(resolve, 600));
       
       setIsSuccess(true);
+      addToast('Thank you for subscribing to our newsletter!', 'success');
       setName('');
       setEmail('');
     } catch (err) {
       console.error(err);
-      alert('Subscription failed. Please check connection and try again.');
+      addToast('Subscription failed. Please check connection and try again.', 'error');
     } finally {
       setIsSubmitting(false);
     }
