@@ -150,7 +150,7 @@ export const translations = {
 
     // Product Config
     productTitle: 'AuraRing X',
-    price: '9,990,000 VND',
+    price: '$ 399',
     selectFinish: 'Select Finish',
     matteBlack: 'Matte Black',
     chromeSilver: 'Chrome Silver',
