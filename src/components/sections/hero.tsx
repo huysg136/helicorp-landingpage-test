@@ -4,12 +4,17 @@ import { Button } from '../ui/button';
 import { Play, CheckCircle } from 'lucide-react';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 import { useToastStore } from '../../store/useToastStore';
-import heroImg from '../../assets/images/hero-ring.webp'
+import { useLanguageStore } from '../../store/useLanguageStore';
+import { translations } from '../../utils/translations';
+import heroImg from '../../assets/images/hero-ring.webp';
 
 export const Hero: React.FC = () => {
   const { addToast } = useToastStore();
+  const { language } = useLanguageStore();
   const containerRef = useRef<HTMLDivElement>(null);
   const { ref, controls, initial } = useScrollAnimation(containerRef);
+
+  const t = translations[language];
 
   const scrollToPreOrder = () => {
     const preOrderSec = document.getElementById('pre-order');
@@ -38,43 +43,43 @@ export const Hero: React.FC = () => {
           {/* Tagline Badge */}
           <div className="inline-flex items-center gap-1.5 self-start px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-blue-400 text-[10px] font-bold tracking-wider uppercase">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            Next Gen Health
+            {t.nextGenHealth}
           </div>
 
           {/* Heading */}
           <h1 className="text-5xl lg:text-6xl font-bold tracking-tight text-slate-800 dark:text-white leading-[1.1]">
-            Your Health. <br />
-            <span className="text-[#004ac6] dark:text-[#2563eb]">On Your Finger.</span>
+            {t.heroTitle} <br />
+            <span className="text-[#004ac6] dark:text-[#2563eb]">{t.heroTitleSpan}</span>
           </h1>
 
           {/* Description */}
           <p className="text-base lg:text-lg text-slate-500 dark:text-slate-400 leading-relaxed">
-            Precision biometric monitoring crafted into a single band of aerospace-grade titanium. The AuraRing X tracks what matters, so you can focus on being your best self.
+            {t.heroDesc}
           </p>
 
           {/* Core Checklist */}
           <div className="space-y-3 pt-2">
             <div className="flex items-center gap-2.5 text-sm font-medium text-slate-600 dark:text-slate-300">
               <CheckCircle size={18} className="text-emerald-500" />
-              <span>Clinical-grade heart rate monitoring</span>
+              <span>{t.checklistHeart}</span>
             </div>
             <div className="flex items-center gap-2.5 text-sm font-medium text-slate-600 dark:text-slate-300">
               <CheckCircle size={18} className="text-emerald-500" />
-              <span>Advanced sleep phase analysis</span>
+              <span>{t.checklistSleep}</span>
             </div>
           </div>
 
           {/* CTA Buttons */}
           <div className="flex flex-wrap gap-4 pt-4">
             <Button variant="primary" onClick={scrollToPreOrder}>
-              Pre-order Now
+              {t.preOrderNow}
             </Button>
             <Button
               variant="secondary"
-              onClick={() => addToast('Watch Film: Introducing the AuraRing X (Coming Soon!)', 'info')}
+              onClick={() => addToast(t.watchFilmToast, 'info')}
             >
               <Play size={16} className="fill-slate-800 dark:fill-white text-slate-800 dark:text-white" />
-              Watch Film
+              {t.watchFilm}
             </Button>
           </div>
         </motion.div>

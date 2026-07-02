@@ -2,11 +2,13 @@ import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { BatteryCharging, Droplets, Bluetooth } from 'lucide-react';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
+import { useLanguageStore } from '../../store/useLanguageStore';
+import { translations } from '../../utils/translations';
 
 interface Spec {
-  label: string;
-  value: string;
-  description: string;
+  labelKey: 'specBattery' | 'specDurability' | 'specConnectivity';
+  valueKey: 'specBatteryVal' | 'specDurabilityVal' | 'specConnectivityVal';
+  descriptionKey: 'specBatteryDesc' | 'specDurabilityDesc' | 'specConnectivityDesc';
   icon: React.ElementType;
   accent: string;       // text color for icon + value
   iconBg: string;        // icon background
@@ -14,25 +16,25 @@ interface Spec {
 
 const specs: Spec[] = [
   {
-    label: 'Battery Life',
-    value: '7 Days',
-    description: 'Full charge in 60 minutes via magnetic puck.',
+    labelKey: 'specBattery',
+    valueKey: 'specBatteryVal',
+    descriptionKey: 'specBatteryDesc',
     icon: BatteryCharging,
     accent: 'text-amber-500',
     iconBg: 'bg-amber-500/10',
   },
   {
-    label: 'Durability',
-    value: '50m',
-    description: 'Water resistant. Ocean and shower safe.',
+    labelKey: 'specDurability',
+    valueKey: 'specDurabilityVal',
+    descriptionKey: 'specDurabilityDesc',
     icon: Droplets,
     accent: 'text-sky-500',
     iconBg: 'bg-sky-500/10',
   },
   {
-    label: 'Connectivity',
-    value: 'BLE 5.2',
-    description: 'Seamless sync with iOS & Android Health.',
+    labelKey: 'specConnectivity',
+    valueKey: 'specConnectivityVal',
+    descriptionKey: 'specConnectivityDesc',
     icon: Bluetooth,
     accent: 'text-[#004ac6] dark:text-blue-400',
     iconBg: 'bg-[#004ac6]/10 dark:bg-blue-400/10',
@@ -40,6 +42,9 @@ const specs: Spec[] = [
 ];
 
 const SpecCard: React.FC<{ spec: Spec; delay: number }> = ({ spec, delay }) => {
+  const { language } = useLanguageStore();
+  const t = translations[language];
+
   const cardRef = useRef<HTMLDivElement>(null);
   const { ref, controls, initial } = useScrollAnimation(cardRef, delay);
   const Icon = spec.icon;
@@ -58,17 +63,17 @@ const SpecCard: React.FC<{ spec: Spec; delay: number }> = ({ spec, delay }) => {
 
       {/* Label */}
       <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 tracking-wider uppercase">
-        {spec.label}
+        {t[spec.labelKey]}
       </span>
 
       {/* Big value */}
       <p className={`text-4xl font-bold tracking-tight mt-1 mb-3 ${spec.accent}`}>
-        {spec.value}
+        {t[spec.valueKey]}
       </p>
 
       {/* Description */}
       <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-        {spec.description}
+        {t[spec.descriptionKey]}
       </p>
 
       {/* Decorative corner glow */}
@@ -78,6 +83,9 @@ const SpecCard: React.FC<{ spec: Spec; delay: number }> = ({ spec, delay }) => {
 };
 
 export const SpecsGrid: React.FC = () => {
+  const { language } = useLanguageStore();
+  const t = translations[language];
+
   const titleRef = useRef<HTMLDivElement>(null);
   const { ref: titleAnimRef, controls: titleControls, initial: titleInitial } = useScrollAnimation(titleRef);
 
@@ -94,16 +102,16 @@ export const SpecsGrid: React.FC = () => {
           className="max-w-xl mx-auto mb-10 text-center space-y-2"
         >
           <span className="text-[10px] font-bold text-[#004ac6] dark:text-blue-400 tracking-wider uppercase">
-            By the numbers
+            {t.byTheNumbers}
           </span>
           <h2 className="text-3xl font-bold tracking-tight text-slate-800 dark:text-white">
-            Built to Perform
+            {t.builtToPerform}
           </h2>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {specs.map((spec, index) => (
-            <SpecCard key={spec.label} spec={spec} delay={index * 0.12} />
+            <SpecCard key={spec.labelKey} spec={spec} delay={index * 0.12} />
           ))}
         </div>
       </div>

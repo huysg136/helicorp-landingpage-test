@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Message } from '../../types';
 import { askGemini } from '../../services/gemini';
 import { Send, X, Bot, User } from 'lucide-react';
+import { useLanguageStore } from '../../store/useLanguageStore';
+import { translations } from '../../utils/translations';
 
 // Strip common markdown tokens so bot replies render as plain text.
 const stripMarkdown = (text: string): string =>
@@ -17,11 +19,14 @@ interface ChatWindowProps {
 }
 
 export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
+  const { language } = useLanguageStore();
+  const t = translations[language];
+
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 'welcome',
       sender: 'bot',
-      text: 'Xin chào! Tôi có thể giúp gì cho bạn về các tính năng, pin, và cấu hình của AuraRing X?',
+      text: t.chatWelcome,
       timestamp: new Date(),
     },
   ]);
@@ -29,6 +34,17 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
   const [isTyping, setIsTyping] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Sync welcome message on language change
+  useEffect(() => {
+    setMessages((prev) =>
+      prev.map((msg) =>
+        msg.id === 'welcome'
+          ? { ...msg, text: t.chatWelcome }
+          : msg
+      )
+    );
+  }, [language, t.chatWelcome]);
 
   // Auto-scroll to bottom of conversation
   useEffect(() => {
@@ -90,9 +106,9 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
           </div>
           <div className="text-left">
             <h3 className="text-sm font-bold text-slate-800 dark:text-white leading-none">
-              AuraRing Assistant
+              {t.chatTitle}
             </h3>
-            <span className="text-[10px] text-emerald-500 font-medium">Online</span>
+            <span className="text-[10px] text-emerald-500 font-medium">{t.chatOnline}</span>
           </div>
         </div>
         <button
@@ -158,7 +174,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
         <input
           ref={inputRef}
           type="text"
-          placeholder="Ask something about AuraRing X..."
+          placeholder={t.chatPlaceholder}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           disabled={isTyping}

@@ -2,8 +2,13 @@ import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Moon, HeartPulse, Shield, Zap, Droplets } from 'lucide-react';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
+import { useLanguageStore } from '../../store/useLanguageStore';
+import { translations } from '../../utils/translations';
 
 export const Insights: React.FC = () => {
+  const { language } = useLanguageStore();
+  const t = translations[language];
+
   const titleRef = useRef<HTMLDivElement>(null);
   const { ref: titleAnimRef, controls: titleControls, initial: titleInitial } = useScrollAnimation(titleRef);
 
@@ -28,13 +33,10 @@ export const Insights: React.FC = () => {
           className="max-w-2xl mx-auto mb-12 space-y-3 text-center"
         >
           <h2 className="text-3xl lg:text-4xl font-bold tracking-tight text-slate-800 dark:text-white">
-            Incredible Insight
+            {t.insightsTitle}
           </h2>
           <p className="text-sm lg:text-base text-slate-500 dark:text-slate-400 leading-relaxed">
-            Smaller than a coin, smarter than a watch. AuraRing X packs industry-leading sensors{' '}
-            <br className="hidden md:block" />
-            into a{' '}
-            <span className="text-[#004ac6] dark:text-blue-400 font-medium">2.5mm profile.</span>
+            {t.insightsSub}
           </p>
         </motion.div>
 
@@ -53,11 +55,10 @@ export const Insights: React.FC = () => {
                 <Moon size={22} />
               </div>
               <h3 className="text-xl font-bold text-slate-800 dark:text-white pt-2">
-                Sleep Tracking
+                {t.sleepTracking}
               </h3>
               <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed max-w-xs">
-                Analyze your REM, deep, and light sleep stages with 99% accuracy.{' '}
-                <span className="text-[#004ac6] dark:text-blue-400">Wake up refreshed with our smart alarm vibration.</span>
+                {t.sleepDesc}
               </p>
             </div>
 
@@ -91,11 +92,10 @@ export const Insights: React.FC = () => {
                 <HeartPulse size={22} />
               </div>
               <h3 className="text-xl font-bold text-slate-800 dark:text-white pt-2">
-                Heart Rate
+                {t.heartRate}
               </h3>
               <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-                Continuous monitoring of HRV and blood oxygen (SpO2).{' '}
-                <span className="text-[#004ac6] dark:text-blue-400">Instant irregular pattern alerts.</span>
+                {t.heartRateDesc}
               </p>
             </div>
 
@@ -118,11 +118,10 @@ export const Insights: React.FC = () => {
                 <Shield size={22} />
               </div>
               <h3 className="text-xl font-bold text-slate-800 dark:text-white pt-2">
-                Titanium Shell
+                {t.titaniumShell}
               </h3>
               <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-                Engineered with Grade 5 Titanium.{' '}
-                <span className="text-[#004ac6] dark:text-blue-400">Lighter than steel, worn 24/7.</span>
+                {t.titaniumShellDesc}
               </p>
             </div>
 
@@ -130,11 +129,11 @@ export const Insights: React.FC = () => {
             <div className="hidden sm:flex flex-col gap-2 shrink-0">
               <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-700/60">
                 <Zap size={12} className="text-amber-500" />
-                <span className="text-[10px] font-semibold text-slate-600 dark:text-slate-300">Grade 5</span>
+                <span className="text-[10px] font-semibold text-slate-600 dark:text-slate-300">{t.grade5}</span>
               </div>
               <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-700/60">
                 <Droplets size={12} className="text-sky-500" />
-                <span className="text-[10px] font-semibold text-slate-600 dark:text-slate-300">50m WR</span>
+                <span className="text-[10px] font-semibold text-slate-600 dark:text-slate-300">{t.waterResistant}</span>
               </div>
             </div>
           </motion.div>

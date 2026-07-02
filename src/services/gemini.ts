@@ -1,10 +1,36 @@
 // Uses Groq's OpenAI-compatible chat completions endpoint.
 // API Key from environment or falls back to standard client side simulation.
+import { useLanguageStore } from '../store/useLanguageStore';
+
 const API_KEY = import.meta.env.VITE_AI_API_KEY || '';
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 const GROQ_MODEL = 'llama-3.3-70b-versatile';
 
-const SYSTEM_INSTRUCTION = `
+const getSystemInstruction = (lang: 'en' | 'vi') => {
+  if (lang === 'en') {
+    return `
+You are AuraRing X AI assistant, a smart health consultant designed by AuraRing Tech.
+You are helping potential buyers and existing users learn more about the AuraRing X smart ring.
+Key specifications of AuraRing X:
+- Colors available: Matte Black, Chrome Silver, Rose Gold.
+- Price: 9,990,000 VND (Vietnamese Dong).
+- Battery Life: 7 Days (full charge in 60 minutes via magnetic puck).
+- Durability: Water resistant up to 50m (Ocean and shower safe).
+- Shell material: Grade 5 Titanium (Titanium Shell), engineered to be light, durable and worn 24/7.
+- Connectivity: BLE 5.2 (Seamless sync with iOS & Android Health apps).
+- Features: Sleep Tracking (REM, deep, light stages with 99% accuracy), Heart Rate monitoring (continuous HRV, SpO2, irregular pulse warnings), body temperature variation, activity level tracking.
+- Sizes: 6, 7, 8, 9 (Sizing Kit is sent first to determine exact fit).
+
+Tone and Style:
+Always be extremely polite, friendly, helpful, and welcoming. Use greetings like "Hello there, I'd be happy to help!" or "Hi, how can I assist you today?".
+Help the customer make a purchase decision easily.
+Keep answers concise, under 3 sentences, yet warm and informative.
+
+IMPORTANT: Do NOT use any markdown formatting (no **bold**, no *italic*, no bullet points with *, no headers). Write in plain text only.
+`;
+  }
+
+  return `
 You are AuraRing X AI assistant, a smart health consultant designed by AuraRing Tech.
 You are helping potential buyers and existing users learn more about the AuraRing X smart ring.
 Key specifications of AuraRing X:
@@ -24,6 +50,7 @@ Giữ câu trả lời ngắn gọn, cô đọng dưới 3 câu nhưng đầy đ
 
 IMPORTANT: Do NOT use any markdown formatting (no **bold**, no *italic*, no bullet points with *, no headers). Write in plain text only.
 `;
+};
 
 type ChatTurn = { role: 'user' | 'model'; parts: string[] };
 type GroqMessage = { role: 'system' | 'user' | 'assistant'; content: string };
@@ -33,7 +60,25 @@ const getSimulatedResponse = async (prompt: string, chatHistory: ChatTurn[]): Pr
   await new Promise((resolve) => setTimeout(resolve, 1000));
   const userText = prompt || chatHistory.filter((m) => m.role === 'user').slice(-1)[0]?.parts[0] || '';
   const promptLower = userText.toLowerCase();
-  
+  const lang = useLanguageStore.getState().language;
+
+  if (lang === 'en') {
+    if (promptLower.includes('price') || promptLower.includes('cost') || promptLower.includes('how much')) {
+      return 'The AuraRing X is officially priced at 9,990,000 VND. If you order today, you will receive a free Sizing Kit sent to your home. Just click Add to Cart to secure this offer!';
+    }
+    if (promptLower.includes('battery') || promptLower.includes('pin') || promptLower.includes('charge')) {
+      return 'The AuraRing X battery lasts up to 7 days on a single charge and charges fully in just 60 minutes. You can track your health all week without interruption!';
+    }
+    if (promptLower.includes('water') || promptLower.includes('swim') || promptLower.includes('resistant')) {
+      return 'It is water-resistant up to 50 meters, so you can wear it swimming, in the shower, or during workouts without any worries!';
+    }
+    if (promptLower.includes('size') || promptLower.includes('fit')) {
+      return 'We offer sizes from 6 to 9. We will ship a free Sizing Kit to your home first, so you can try it on and choose the perfect fit before we ship your ring!';
+    }
+    return 'Hello! I am Aura Assistant. I would be happy to help you with the AuraRing X features, battery, or configuration. What information can I help you with today?';
+  }
+
+  // Vietnamese fallback
   if (promptLower.includes('giá') || promptLower.includes('price') || promptLower.includes('bao nhiêu')) {
     return 'Dạ AuraRing X hiện tại có giá bán chính thức là 9.990.000 ₫ ạ. Khi anh chị đặt mua hôm nay sẽ được tặng kèm bộ Sizing Kit đo size tay miễn phí tận nhà, mình nhấn Add to Cart để giữ ưu đãi liền nhé.';
   }
@@ -52,7 +97,7 @@ const getSimulatedResponse = async (prompt: string, chatHistory: ChatTurn[]): Pr
 
 // Converts our { role: 'user'|'model', parts: string[] } shape into
 // Groq/OpenAI's { role: 'user'|'assistant', content: string } shape.
-const toGroqMessages = (prompt: string, chatHistory: ChatTurn[]): GroqMessage[] => {
+const toGroqMessages = (prompt: string, chatHistory: ChatTurn[], lang: 'en' | 'vi'): GroqMessage[] => {
   let historySlice = chatHistory;
   let messageToSend = prompt;
 
@@ -70,7 +115,7 @@ const toGroqMessages = (prompt: string, chatHistory: ChatTurn[]): GroqMessage[] 
   }));
 
   return [
-    { role: 'system', content: SYSTEM_INSTRUCTION },
+    { role: 'system', content: getSystemInstruction(lang) },
     ...historyMessages,
     { role: 'user', content: messageToSend },
   ];
@@ -84,7 +129,8 @@ export const askGemini = async (prompt: string, chatHistory: ChatTurn[] = []): P
     return getSimulatedResponse(prompt, chatHistory);
   }
 
-  const messages = toGroqMessages(prompt, chatHistory);
+  const lang = useLanguageStore.getState().language;
+  const messages = toGroqMessages(prompt, chatHistory, lang);
   const MAX_RETRIES = 3;
   let lastError: unknown;
 

@@ -4,12 +4,17 @@ import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { validateEmail, validateName } from '../../utils/validation';
 import { useToastStore } from '../../store/useToastStore';
+import { useLanguageStore } from '../../store/useLanguageStore';
+import { translations } from '../../utils/translations';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 
 export const Newsletter: React.FC = () => {
   const { addToast } = useToastStore();
+  const { language } = useLanguageStore();
   const containerRef = useRef<HTMLDivElement>(null);
   const { ref, controls, initial } = useScrollAnimation(containerRef);
+
+  const t = translations[language];
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -28,12 +33,12 @@ export const Newsletter: React.FC = () => {
     setEmailError('');
 
     if (!validateName(name)) {
-      setNameError('Full name must be at least 2 characters.');
+      setNameError(t.nameError);
       isValid = false;
     }
 
     if (!validateEmail(email)) {
-      setEmailError('Please enter a valid email address.');
+      setEmailError(t.emailError);
       isValid = false;
     }
 
@@ -46,12 +51,12 @@ export const Newsletter: React.FC = () => {
       await new Promise((resolve) => setTimeout(resolve, 600));
       
       setIsSuccess(true);
-      addToast('Thank you for subscribing to our newsletter!', 'success');
+      addToast(t.successSubscribe, 'success');
       setName('');
       setEmail('');
     } catch (err) {
       console.error(err);
-      addToast('Subscription failed. Please check connection and try again.', 'error');
+      addToast(t.subscribeFailed, 'error');
     } finally {
       setIsSubmitting(false);
     }
@@ -75,16 +80,16 @@ export const Newsletter: React.FC = () => {
           {/* Header */}
           <div className="space-y-3">
             <h2 className="text-3xl font-bold tracking-tight text-slate-800 dark:text-white">
-              Stay Ahead of the Curve
+              {t.stayAhead}
             </h2>
             <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-              Join 50,000+ early adopters receiving weekly health optimization tips and exclusive firmware updates.
+              {t.newsletterDesc}
             </p>
           </div>
 
           {isSuccess ? (
             <div className="p-6 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-sm font-medium animate-fadeIn">
-              🎉 Thank you for subscribing! We will send updates to your inbox.
+              {t.successSubscribe}
             </div>
           ) : (
             /* Registration Form */
@@ -92,7 +97,7 @@ export const Newsletter: React.FC = () => {
               <Input
                 id="fullNameInput"
                 type="text"
-                placeholder="Full Name"
+                placeholder={t.fullNamePlaceholder}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 error={nameError}
@@ -102,7 +107,7 @@ export const Newsletter: React.FC = () => {
               <Input
                 id="emailAddressInput"
                 type="email"
-                placeholder="Email Address"
+                placeholder={t.emailPlaceholder}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 error={emailError}
@@ -116,15 +121,24 @@ export const Newsletter: React.FC = () => {
                 disabled={isSubmitting}
                 className="w-full bg-[#191c1e] hover:bg-slate-800 text-white dark:bg-white dark:hover:bg-slate-100 dark:text-[#12161f] font-semibold rounded-xl h-12 shadow-none"
               >
-                {isSubmitting ? 'Registering...' : 'Get Early Access'}
+                {isSubmitting ? t.submitting : t.getEarlyAccess}
               </Button>
             </form>
           )}
 
           {/* Privacy Note */}
           <p className="text-[11px] text-slate-400 dark:text-slate-500">
-            By subscribing, you agree to our{' '}
-            <span className="text-slate-600 dark:text-slate-300 underline underline-offset-2">Privacy Policy</span>.
+            {language === 'vi' ? (
+              <>
+                Bằng việc đăng ký, bạn đồng ý với{' '}
+                <span className="text-slate-600 dark:text-slate-300 underline underline-offset-2">{t.privacyPolicy}</span> của chúng tôi.
+              </>
+            ) : (
+              <>
+                By subscribing, you agree to our{' '}
+                <span className="text-slate-600 dark:text-slate-300 underline underline-offset-2">{t.privacyPolicy}</span>.
+              </>
+            )}
           </p>
 
         </motion.div>
