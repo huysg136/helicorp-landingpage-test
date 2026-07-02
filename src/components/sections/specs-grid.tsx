@@ -31,7 +31,7 @@ export const SpecsGrid: React.FC = () => {
       ref={ref}
       className="py-16 px-6 bg-white dark:bg-slate-950 transition-colors duration-300"
     >
-      <div className="max-w-[1200px] mx-auto">
+      <div className="max-w-300 mx-auto">
         <motion.div
           animate={controls}
           initial={initial}

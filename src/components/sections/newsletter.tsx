@@ -73,7 +73,7 @@ export const Newsletter: React.FC = () => {
           className="relative overflow-hidden bg-white dark:bg-[#12161f] border border-slate-100 dark:border-slate-800/60 rounded-3xl p-8 lg:p-12 shadow-xl shadow-slate-900/5 dark:shadow-2xl dark:shadow-black/40 space-y-8"
         >
           {/* Top gradient bar */}
-          <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-blue-500 via-cyan-400 to-emerald-400" />
+          <div className="absolute top-0 left-0 right-0 h-0.75 bg-linear-to-r from-blue-500 via-cyan-400 to-emerald-400" />
 
           {/* Header */}
           <div className="space-y-3">
