@@ -9,7 +9,7 @@
 
 | | |
 |---|---|
-| **Live Demo** | *(Thêm link Vercel / Netlify sau khi deploy)* |
+| **Live Demo** | [*(Thêm link Vercel / Netlify sau khi deploy)*](https://helicorp-landingpage-test.vercel.app/) |
 | **PageSpeed Insights** | *(Đính kèm ảnh chụp màn hình vào `/docs`)* |
 
 ---
