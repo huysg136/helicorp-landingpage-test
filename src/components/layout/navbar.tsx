@@ -21,7 +21,7 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      <nav className="sticky top-0 z-40 mx-2 w-full backdrop-blur-md bg-white/75 dark:bg-slate-900/75 border-b border-slate-100 dark:border-slate-800 transition-colors duration-300">
+      <nav className="sticky top-0 z-40 w-full backdrop-blur-md bg-white/75 dark:bg-slate-900/75 border-b border-slate-100 dark:border-slate-800 transition-colors duration-300">
         <div className="max-w-300 mx-auto h-16 flex items-center justify-between">
           <div className="flex items-center gap-2 cursor-pointer" onClick={() => scrollToSection('hero')}>
             <img 
