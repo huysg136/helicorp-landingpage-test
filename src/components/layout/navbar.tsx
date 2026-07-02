@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useStore } from '../../store/useStore';
-import { Menu, X, Heart, ShoppingBag, Sun, Moon, Trash2 } from 'lucide-react';
+import { Menu, X, Heart, ShoppingBag, Sun, Moon, Trash2, Sparkles, Gauge, PackageCheck, ChevronRight } from 'lucide-react';
 import logoImg from '../../assets/logo/logo.webp'
+
+const navLinks = [
+  { id: 'features', label: 'Features', icon: Sparkles },
+  { id: 'specs', label: 'Specs', icon: Gauge },
+  { id: 'pre-order', label: 'Pre-order', icon: PackageCheck },
+];
 
 export const Navbar: React.FC = () => {
   const { wishlist, cart, theme, toggleWishlist, toggleTheme, removeFromCart, clearCart } = useStore();
@@ -12,22 +19,34 @@ export const Navbar: React.FC = () => {
   const totalCartPrice = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   const scrollToSection = (id: string) => {
+    const isMobileMenuOpen = isMenuOpen;
     setIsMenuOpen(false);
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+
+    const doScroll = () => {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    };
+
+    if (isMobileMenuOpen) {
+      // Đợi animation đóng mobile menu hoàn tất (300ms) trước khi scroll,
+      // để layout ổn định — tránh 2 animation (menu collapse + scroll) đá nhau.
+      setTimeout(doScroll, 300);
+    } else {
+      doScroll();
     }
   };
 
   return (
     <>
       <nav className="sticky top-0 z-40 w-full backdrop-blur-md bg-white/75 dark:bg-slate-900/75 border-b border-slate-100 dark:border-slate-800 transition-colors duration-300">
-        <div className="max-w-300 mx-auto h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => scrollToSection('hero')}>
-            <img 
+        <div className="max-w-300 mx-auto px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-2 cursor-pointer group" onClick={() => scrollToSection('hero')}>
+            <img
               src={logoImg}
-              alt="AuraRing Logo" 
-              className="w-12 h-12" 
+              alt="AuraRing Logo"
+              className="w-10 h-10 transition-transform duration-300 group-hover:scale-105"
             />
             <span className="font-bold text-lg text-slate-800 dark:text-white tracking-tight">
               AuraRing X
@@ -36,45 +55,36 @@ export const Navbar: React.FC = () => {
 
           {/* Desktop Navigation Links */}
           <div className="hidden md:flex items-center gap-8">
-            <button
-              onClick={() => scrollToSection('features')}
-              className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-[#004ac6] dark:hover:text-blue-400 transition-colors"
-            >
-              Features
-            </button>
-            <button
-              onClick={() => scrollToSection('specs')}
-              className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-[#004ac6] dark:hover:text-blue-400 transition-colors"
-            >
-              Specs
-            </button>
-            <button
-              onClick={() => scrollToSection('pre-order')}
-              className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-[#004ac6] dark:hover:text-blue-400 transition-colors relative"
-            >
-              Pre-order
-              <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#004ac6] dark:text-blue-400 rounded" />
-            </button>
+            {navLinks.map((link) => (
+              <button
+                key={link.id}
+                onClick={() => scrollToSection(link.id)}
+                className="relative text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-[#004ac6] dark:hover:text-blue-400 transition-colors group"
+              >
+                {link.label}
+                <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#004ac6] dark:bg-blue-400 rounded scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300" />
+              </button>
+            ))}
           </div>
 
           {/* Action Icons */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-1">
             {/* Wishlist toggle */}
             <button
               onClick={toggleWishlist}
-              className="p-2 text-slate-600 dark:text-slate-300 hover:text-red-500 transition-colors"
+              className="p-2.5 rounded-full text-slate-600 dark:text-slate-300 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
               title="Favorite list"
             >
-              <Heart size={20} className={wishlist ? 'fill-red-500 text-red-500' : ''} />
+              <Heart size={19} className={wishlist ? 'fill-red-500 text-red-500' : ''} />
             </button>
 
             {/* Shopping Cart button */}
             <button
               onClick={() => setIsCartOpen(true)}
-              className="p-2 text-slate-600 dark:text-slate-300 hover:text-[#004ac6] dark:hover:text-blue-400 transition-colors relative"
+              className="relative p-2.5 rounded-full text-slate-600 dark:text-slate-300 hover:text-[#004ac6] dark:hover:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
               title="Cart"
             >
-              <ShoppingBag size={20} />
+              <ShoppingBag size={19} />
               {totalCartCount > 0 && (
                 <span className="absolute top-1 right-1 w-4.5 h-4.5 bg-[#004ac6] text-white text-[10px] rounded-full flex items-center justify-center font-bold">
                   {totalCartCount}
@@ -85,47 +95,71 @@ export const Navbar: React.FC = () => {
             {/* Dark mode switcher */}
             <button
               onClick={toggleTheme}
-              className="p-2 text-slate-600 dark:text-slate-300 hover:text-[#004ac6] dark:hover:text-blue-400 transition-colors"
+              className="p-2.5 rounded-full text-slate-600 dark:text-slate-300 hover:text-[#004ac6] dark:hover:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
               title="Toggle theme"
             >
-              {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+              {theme === 'light' ? <Moon size={19} /> : <Sun size={19} />}
             </button>
 
             {/* Mobile Menu trigger */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
-              aria-label={isMenuOpen ? "Đóng menu điều hướng" : "Mở menu điều hướng"} 
-              aria-expanded={isMenuOpen} 
+              className="md:hidden p-2.5 ml-1 rounded-full text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              aria-label={isMenuOpen ? "Đóng menu điều hướng" : "Mở menu điều hướng"}
+              aria-expanded={isMenuOpen}
             >
-              {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={isMenuOpen ? 'close' : 'open'}
+                  initial={{ rotate: -90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: 90, opacity: 0 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
+                </motion.div>
+              </AnimatePresence>
             </button>
           </div>
         </div>
 
         {/* Mobile Navigation Drawer */}
-        {isMenuOpen && (
-          <div className="md:hidden border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 px-6 py-4 flex flex-col gap-4 animate-fadeIn">
-            <button
-              onClick={() => scrollToSection('features')}
-              className="text-left py-2 font-medium text-slate-600 dark:text-slate-300 hover:text-[#004ac6]"
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.25, ease: 'easeInOut' }}
+              className="md:hidden overflow-hidden border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900"
             >
-              Features
-            </button>
-            <button
-              onClick={() => scrollToSection('specs')}
-              className="text-left py-2 font-medium text-slate-600 dark:text-slate-300 hover:text-[#004ac6]"
-            >
-              Specs
-            </button>
-            <button
-              onClick={() => scrollToSection('pre-order')}
-              className="text-left py-2 font-medium text-slate-600 dark:text-slate-300 hover:text-[#004ac6] text-[#004ac6] dark:text-blue-400"
-            >
-              Pre-order
-            </button>
-          </div>
-        )}
+              <div className="px-6 py-4 flex flex-col">
+                {navLinks.map((link, idx) => {
+                  const Icon = link.icon;
+                  return (
+                    <button
+                      key={link.id}
+                      onClick={() => scrollToSection(link.id)}
+                      className={`flex items-center justify-between py-3.5 group ${
+                        idx !== navLinks.length - 1 ? 'border-b border-slate-100 dark:border-slate-800/60' : ''
+                      }`}
+                    >
+                      <span className="flex items-center gap-3">
+                        <span className="w-9 h-9 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 group-hover:bg-[#004ac6]/10 group-hover:text-[#004ac6] dark:group-hover:bg-blue-400/10 dark:group-hover:text-blue-400 transition-colors">
+                          <Icon size={16} />
+                        </span>
+                        <span className="text-sm font-semibold text-slate-700 dark:text-slate-200 group-hover:text-[#004ac6] dark:group-hover:text-blue-400 transition-colors">
+                          {link.label}
+                        </span>
+                      </span>
+                      <ChevronRight size={16} className="text-slate-300 dark:text-slate-600 group-hover:translate-x-0.5 transition-transform" />
+                    </button>
+                  );
+                })}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
 
       {/* Shopping Cart Sidebar Modal */}
