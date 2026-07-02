@@ -30,49 +30,6 @@
 
 ---
 
-## ✨ Tính năng đã triển khai
-
-### 🛒 Mini E-commerce
-- **Giỏ hàng (Cart Drawer):** Thêm / xóa từng sản phẩm theo biến thể (màu sắc + size). Hiển thị số lượng badge trên icon. Thanh toán giả lập tự động xóa giỏ hàng.
-- **Danh sách yêu thích (Wishlist Drawer):** Lưu từng biến thể sản phẩm cụ thể (không phải toggle boolean). Hỗ trợ "Thêm vào giỏ" nhanh từ wishlist. Icon ❤️ hiển thị filled/unfilled theo từng biến thể đang chọn.
-- Toàn bộ trạng thái được persist vào `localStorage` qua Zustand.
-
-### 🌐 Đa ngôn ngữ (i18n)
-- Hỗ trợ **Tiếng Anh (EN)** và **Tiếng Việt (VI)**.
-- Mặc định: **Tiếng Anh**.
-- Nút chuyển đổi ngôn ngữ hiển thị lá cờ quốc gia (thư viện `country-flag-icons`).
-- Lưu lựa chọn ngôn ngữ vào `localStorage`, tự động áp dụng ở lần truy cập tiếp theo.
-- Toàn bộ nội dung trang (Hero, Features, Specs, Product Config, Newsletter, Footer, Chatbot) đều được dịch đồng bộ.
-
-### 🤖 AI Chatbot
-- Trợ lý ảo **Aura Assistant** tích hợp ở góc màn hình.
-- Kết nối **Groq API** (llama-3.3-70b-versatile). Khi không có API Key, tự động chuyển sang chế độ giả lập thông minh.
-- Tự động điều chỉnh ngôn ngữ (EN/VI) theo lựa chọn của người dùng.
-- Retry tự động với exponential backoff khi gặp lỗi 429/503.
-
-### 🔔 Toast Notifications
-- Hệ thống toast glassmorphic cao cấp thay thế hoàn toàn `window.alert()`.
-- 3 loại: `success` (xanh), `error` (đỏ), `info` (xanh dương).
-- Hiệu ứng xuất hiện / biến mất mượt mà với Framer Motion.
-- Tự động đóng sau 4 giây.
-
-### 🎨 UI/UX
-- Dark Mode / Light Mode (toggle, persist vào localStorage).
-- Scroll animations với Framer Motion + IntersectionObserver.
-- Glassmorphism, gradient, micro-animations trên toàn trang.
-- Responsive hoàn toàn (Mobile / Tablet / Desktop).
-- Bento Grid layout cho phần Features.
-
-### 🔍 SEO
-- **Title** và **Meta Description** tối ưu.
-- **Open Graph** (og:title, og:description, og:image, og:locale).
-- **Twitter Card** (summary_large_image).
-- **Canonical URL**.
-- **JSON-LD Structured Data** (Product schema).
-- `lang="en"` và `theme-color` trên `<html>`.
-
----
-
 ## ⚙️ Cấu hình môi trường
 
 Tạo file `.env` ở thư mục gốc:
@@ -128,14 +85,5 @@ src/
 ├── types/              # TypeScript interfaces
 └── utils/              # translations.ts, validation.ts
 ```
-
----
-
-## 📝 Ghi chú
-
-- Webhook Telegram/Discord đã được **loại bỏ** và thay bằng hệ thống Toast notification nội bộ.
-- Toàn bộ dữ liệu được xử lý **client-side**, không có backend thật.
-
----
 
 *© 2026 AuraRing Tech. Dự án dành cho mục đích tuyển dụng.*
