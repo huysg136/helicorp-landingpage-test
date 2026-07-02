@@ -9,8 +9,9 @@
 
 | | |
 |---|---|
-| **Live Demo** | [https://helicorp-landingpage-test.vercel.app/]https://helicorp-landingpage-test.vercel.app/ |
-| **PageSpeed Insights** | *(Đính kèm ảnh chụp màn hình vào `/docs`)* |
+| **Live Demo** | [https://helicorp-landingpage-test.vercel.app/](https://helicorp-landingpage-test.vercel.app/) |
+| **PageSpeed Insights** | <img width="568" height="170" alt="image" src="https://github.com/user-attachments/assets/491805ab-1f56-4df5-ba76-a06d5b1e1592" />
+ |
 
 ---
 
